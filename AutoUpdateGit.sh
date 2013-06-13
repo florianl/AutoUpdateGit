@@ -16,8 +16,8 @@ do
 	if [ -d $Dir/.git ];
 	then
 		cd $Dir
-		echo ""
-		pwd
+        printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+        pwd
 		git pull -t origin master
 	else
 		continue
