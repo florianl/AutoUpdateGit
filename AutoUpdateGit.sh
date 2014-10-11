@@ -7,19 +7,21 @@ Base=""
 
 if [ -z "$Base" -o "$Base" == "/this/is/my/basedirectory" ];
 then
-	Base=`pwd`
+    Base=$(pwd)
 fi
 echo "BASE: "$Base
 
-for Dir in `find $Base -maxdepth 1 -type d`
+for Dir in $(find $Base -maxdepth 1 -type d)
 do
 	if [ -d $Dir/.git ];
 	then
 		cd $Dir
         printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
         pwd
-		git pull -t origin master
-	else
-		continue
+        remote=$(grep "\[remote" $Dir/.git/config)
+        if [[ $remote ]];
+        then
+		    git pull origin master
+        fi
 	fi
 done
